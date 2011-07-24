@@ -1,0 +1,6 @@
+{
+    "persistence" : {
+        "storage" : "File",
+        "defaultHandler" : "Single"
+    }
+}
