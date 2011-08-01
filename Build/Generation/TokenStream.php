@@ -7,6 +7,7 @@ define('T_CURLYOPEN',       501);
 define('T_CURLYCLOSE',      502);
 define('T_BREAKED_OPEN',    503);
 define('T_BREAKED_CLOSE',   504);
+define('T_SEMICOLON',       505);
 define('T_NO_DEFAULT',      731);
 
 /**
@@ -30,6 +31,7 @@ final class TokenStream {
         '}' => T_CURLYCLOSE,
         '(' => T_BREAKED_OPEN,
         ')' => T_BREAKED_CLOSE,
+        ';' => T_SEMICOLON,
     );
     
     /**

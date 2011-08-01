@@ -316,6 +316,44 @@ final class PhpParser {
                 $curParent->addChild($classNode);
                 $curParent = $classNode;
 
+                // Handles variable declarations
+            } elseif ($tokType === T_VARIABLE) {
+                $varNode = new Ast\VariableAstNode(
+                        $tokLine, $tokText, $curParent);
+
+                // Flush the attribute buffer
+                foreach ($attrBuffer as $attr)
+                    $classNode->addAttribute($attr);
+
+                $attrBuffer = array();
+
+                // Add the doccomment
+                if ($docCommentBuffer != null) {
+                    $classNode->setDocComment($docCommentBuffer);
+                    $docCommentBuffer = null;
+                }
+
+                $token = $stream->getNextToken();
+                $tokType = $token[0];
+                $tokText = $token[1];
+                $tokLine = $token[2];
+
+                if ($tokType === T_STRING && $tokText === '=') {
+                    $tokens = $stream->getAllUntil(T_SEMICOLON);
+                    $count = count($tokens);
+                    $defaultValue = '';
+
+                    for ($i = 0; $i < $count; $i++)
+                        $defaultValue .= $tokens[$i][1];
+
+                    $varNode->setDefaultValue($defaultValue);
+                    $stream->getPreviousToken();
+                }
+
+                $curParent->addChild($varNode);
+
+
+
                 // Handles IF, ELSEIF, FOR, FOREACH and WHILE blocks
             } elseif ($tokType === T_IF 
                     || $tokType === T_ELSEIF
