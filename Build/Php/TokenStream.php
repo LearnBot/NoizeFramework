@@ -209,5 +209,3 @@ final class TokenStream {
         return $this->count;
     }
 }
-
-?>

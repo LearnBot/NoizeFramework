@@ -19,5 +19,3 @@ final class PersistenceException extends \Exception {
         parent::__construct($message, 0, $previous);
     }
 }
-
-?>

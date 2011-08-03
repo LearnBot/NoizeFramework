@@ -64,5 +64,3 @@ final class FileStorage extends BaseStorage {
         unset ($_SESSION[$objKey]);
     }
 }
-
-?>

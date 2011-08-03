@@ -41,8 +41,8 @@ final class FunctionAstNode extends BaseAstNode {
      * @param mixed $default The default-value of the parameter.
      * @param string $type The type-hinting of the parameter.
      */
-    public function addParameter($name, $default = T_NO_DEFAULT, $type = null) {
-        $this->parameters[] = array ($name, $default, $type);
+    public function addParameter($name, $default = T_NO_DEFAULT, $type = null, $order = null) {
+        $this->parameters[$name] = array ($default, $type, $order);
     }
     
     /**
@@ -66,11 +66,20 @@ final class FunctionAstNode extends BaseAstNode {
     /**
      * Returns a parameter of the current node at an given index.
      *
-     * @param int $index The index of the required parameter.
+     * @param string $index The index of the required parameter.
      * @return FunctionAstNode
      */
     public function getParameterAt($index) {
         return $this->parameters[$index];
+    }
+
+    /**
+     * Removes a parameter from this function.
+     *
+     * @param string $index The index of the removed parameter.
+     */
+    public function removeParameter($index) {
+        unset ($this->parameters[$index]);
     }
 
     /**
@@ -138,15 +147,22 @@ final class FunctionAstNode extends BaseAstNode {
             $code .= ' (';
         else
             $code .= ' ' . $this->functionName . ' (';
-        
-        foreach ($this->parameters as $param) {
-            if ($param[2] != null)
-                $code .= $param[2] . ' ';
+
+        usort($this->parameters, function ($a, $b) {
+            if ($a[2] === $b[2])
+                return 0;
+
+            return ($a[2] < $b ? -1 : 1);
+        });
+
+        foreach ($this->parameters as $paramName => $param) {
+            if ($param[1] != null)
+                $code .= $param[1] . ' ';
             
-            $code .= $param[0];
+            $code .= $paramName;
             
-            if ($param[1] !== T_NO_DEFAULT)
-                $code .= ' = ' . $param[1];
+            if ($param[0] !== T_NO_DEFAULT)
+                $code .= ' = ' . $param[0];
             
             $code .= ', ';
         }

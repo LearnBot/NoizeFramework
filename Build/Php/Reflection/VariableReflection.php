@@ -5,6 +5,7 @@ namespace Noize\Build\Php\Reflection;
 /**
  * This class reflects variable code and is able to modify it.
  *
+ * @final
  * @author Jan Gräfen
  * @package Build
  * @subpackage Php\Reflection

@@ -24,5 +24,3 @@ final class PhpParserException extends \Exception {
             E_PARSE, null);
     }
 }
-
-?>

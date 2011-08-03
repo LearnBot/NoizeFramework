@@ -59,5 +59,3 @@ abstract class BaseHandler {
         return static::$instance;
     }
 }
-
-?>

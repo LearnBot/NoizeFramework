@@ -53,7 +53,7 @@ final class NamespaceAstNode extends BaseAstNode {
      * @return string
      */
     public function generate() {
-        return $this->text;
+        return 'namespace ' . $this->namespace;
     }
 }
 

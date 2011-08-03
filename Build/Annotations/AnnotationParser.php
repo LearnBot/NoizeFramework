@@ -154,4 +154,3 @@ final class AnnotationParser {
         return self::$instance;
     }
 }
-?>

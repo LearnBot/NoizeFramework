@@ -107,5 +107,3 @@ final class Configuration {
         return $return; 
     }
 }
-
-?>

@@ -13,7 +13,10 @@ namespace Noize\Build\Php\Ast;
  * @version 1.0
  */
 abstract class BaseAstNode {
-    
+
+    const CHILD_POSITION_BEGINING   = -1;
+    const CHILD_POSITION_END        = -2;
+
     /**
      * Stores the parent node of the current node.
      *
@@ -93,9 +96,14 @@ abstract class BaseAstNode {
      *
      * @param BaseAstNode $childNode An AST node that should be added as a child
      *                               to this one.
+     * @param int $position Decides if the new child should be inserted at the
+     *                      beginning or at the end.
      */
-    public function addChild(BaseAstNode $childNode) {
-        $this->children[] = $childNode;
+    public function addChild(BaseAstNode $childNode, $position = self::CHILD_POSITION_END) {
+        if ($position === self::CHILD_POSITION_BEGINING)
+            $this->children = array ($position) + $this->children;
+        else
+            $this->children[] = $childNode;
     }
     
     /**
@@ -135,6 +143,26 @@ abstract class BaseAstNode {
         return count($this->children);
     }
     
+    /**
+     * Removes a child from the current node.
+     *
+     * @param int|BaseAstNode $child A child-node or an index of a child node
+     *                               which should be deleted.
+     */
+    public function removeChild($child) {
+        if (is_int($child)) {
+            unset ($this->children[$child]);
+            return;
+        }
+
+        foreach ($this->children as $key => $c) {
+            if ($child === $c) {
+                unset ($this->children[$key]);
+                return;
+            }
+        }
+    }
+
     /**
      * Adds a new attribute to the current node.
      *
@@ -181,7 +209,28 @@ abstract class BaseAstNode {
     public function getNumberOfAttributes() {
         return count($this->attributes);
     }
-    
+
+        /**
+     * Removes an attribute from the current node.
+     *
+     * @param int|string $attribute The name or index of the attribute which
+         *                          should be removed.
+     */
+    public function removeAttribute($attribute) {
+        if (is_int($attribute)) {
+            unset ($this->attributes[$attribute]);
+            return;
+        }
+
+        $attribute = strtolower($attribute);
+        foreach ($this->children as $key => $a) {
+            if ($a->generate() === $attribute) {
+                unset ($this->attributes[$key]);
+                return;
+            }
+        }
+    }
+
     /**
      * Returns TRUE if the current node has a doccomment, FALSE otherwise.
      *

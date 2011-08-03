@@ -78,5 +78,3 @@ final class FileStorage extends BaseStorage {
     }
 
 }
-
-?>

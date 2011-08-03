@@ -77,5 +77,3 @@ abstract class BaseStorage {
         return static::$instance;
     }
 }
-
-?>

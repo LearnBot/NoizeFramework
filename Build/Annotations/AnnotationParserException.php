@@ -24,5 +24,3 @@ final class AnnotationParserException extends \Exception {
             E_PARSE, null);
     }
 }
-
-?>

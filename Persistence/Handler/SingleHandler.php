@@ -24,5 +24,3 @@ final class SingleHandler extends BaseHandler {
         return 'n' . md5('noize.persitence.handler.singlehandler');
     }
 }
-
-?>

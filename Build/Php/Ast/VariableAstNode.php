@@ -21,6 +21,24 @@ final class VariableAstNode extends BaseAstNode {
     private $defaultValue = null;
 
     /**
+     * Returns the variable identifier of the current variable node.
+     *
+     * @return string
+     */
+    public function getVariableName() {
+        return substr($this->text, 1);
+    }
+
+    /**
+     * Sets a new variable identifier for the current variable node.
+     *
+     * @param string $variableName A new variable name.
+     */
+    public function setVariableName($variableName) {
+
+    }
+
+    /**
      * Returns TRUE if the current node has a default value, FALSE otherwise.
      *
      * @return bool

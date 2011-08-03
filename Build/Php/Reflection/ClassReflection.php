@@ -3,6 +3,7 @@
 namespace Noize\Build\Php\Reflection;
 
 use Noize\Build\Php\Ast\FunctionAstNode;
+use Noize\Build\Php\Ast\VariableAstNode;
 
 /**
  * This class reflects class code and is able to modify it.
@@ -14,6 +15,58 @@ use Noize\Build\Php\Ast\FunctionAstNode;
  * @version 1.0
  */
 final class ClassReflection extends BaseReflection {
+
+    public function getClassName() {
+        return $this->node->getClassName();
+    }
+
+    public function setClassName($className) {
+        $this->node->setClassName($className);
+    }
+
+    /**
+     * Adds a variable to the current class reflection.
+     *
+     * @param VariableReflection $reflection A variable reflection that should be added.
+     */
+    public function addVariable(VariableReflection $reflection) {
+        $this->node->addChild($reflection->getAstNode());
+    }
+
+    /**
+     * Returns a variable of the current class reflection.
+     *
+     * @param string $variableName The name of the variable.
+     * @return VariableReflection
+     */
+    public function getVariable($variableName) {
+        $variables = $this->getAllVariables();
+        return $variables[$variableName];
+    }
+
+    /**
+     * Returns an array of all functions of the current class reflection.
+     *
+     * @return array
+     */
+    public function getAllVariables() {
+        $variables = array ();
+
+        foreach ($this->node->getChildren() as $child)
+            if ($child instanceof VariableAstNode)
+                $variables[$child->getVariableName()] = new VariableReflection($child);
+
+        return $variables;
+    }
+
+    /**
+     * Removes a variable from the current class reflection.
+     *
+     * @param string $functionName The variable name of the variable that should be deleted.
+     */
+    public function removeVariable($variableName) {
+        $this->node->removeChild($this->getVariable($variableName)->getAstNode());
+    }
 
     /**
      * Adds a function to the current class reflection.
@@ -31,10 +84,8 @@ final class ClassReflection extends BaseReflection {
      * @return FunctionReflection
      */
     public function getFunction($functionName) {
-        foreach ($this->getAllFunctions() as $function) {
-            if ($function->getFunctionName === $functionName)
-                return $function;
-        }
+        $functions = $this->getAllFunctions();
+        return $functions[$functionName];
     }
 
     /**
@@ -45,11 +96,9 @@ final class ClassReflection extends BaseReflection {
     public function getAllFunctions() {
         $functions = array ();
 
-        foreach ($this->node->getChildren() as $child) {
-            if ($child instanceof FunctionAstNode) {
+        foreach ($this->node->getChildren() as $child)
+            if ($child instanceof FunctionAstNode)
                 $functions[$child->getFunctionName()] = new FunctionReflection($child);
-            }
-        }
 
         return $functions;
     }

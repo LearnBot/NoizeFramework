@@ -37,5 +37,3 @@ interface IPersistable {
      */
     public static function __set_state($array);
 }
-
-?>

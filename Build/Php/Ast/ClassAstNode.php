@@ -63,6 +63,13 @@ final class ClassAstNode extends BaseAstNode {
     }
     
     /**
+     * Removes the extending class.
+     */
+    public function removeExtends() {
+        $this->extends = '';
+    }
+
+    /**
      * Adds a new interface implementation to the current node.
      *
      * @param type $implements The name of the interface which is implemented by
@@ -110,13 +117,33 @@ final class ClassAstNode extends BaseAstNode {
     public function getNumberOfImplements() {
         return count($this->implements);
     }
-    
+
+    /**
+     * Removes an interface from the list of implemented interfaces.
+     *
+     * @param string|int $interface The interface name or index which should not
+     *                              be implemented.
+     */
+    public function removeImplements($interface) {
+        if (is_int($interface)) {
+            unset ($this->implements[$interface]);
+            return;
+        }
+
+        foreach ($this->implements as $key => $implements) {
+            if ($implements === $interface) {
+                unset ($this->implements[$key]);
+                return;
+            }
+        }
+    }
+
     /**
      * Returns the class name of the current node.
      *
      * @return string
      */
-    public function getName() {
+    public function getClassName() {
         return $this->className;
     }
     

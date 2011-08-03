@@ -87,7 +87,7 @@ final class PhpParser {
                 $closeDec = false;
 
                 // Handles public attributes
-            } elseif ($tokType === T_PUBLIC) {
+            } elseif ($tokType === T_PUBLIC || $tokType === T_VAR) {
                 $attrBuffer[] = new Ast\PublicAstAttribute($tokLine);
 
                 // Handles protected attributes
@@ -115,6 +115,22 @@ final class PhpParser {
                     $stream->getPreviousToken();
 
                 $attrBuffer[] = new Ast\StaticAstAttribute($tokLine);
+
+                // Handles namespace definitions
+            } elseif ($tokType === \T_NAMESPACE) {
+                $nsNode = new Ast\NamespaceAstNode($tokLine, $tokText, $curParent);
+
+                // Process namespace path
+                $token = $stream->getNextToken();
+                $tokType = $token[0];
+                $tokText = $token[1];
+                $tokLine = $token[2];
+
+                if ($token == null || $tokType !== T_STRING)
+                    throw new PhpParserException($tokLine, $tokText);
+
+                $nsNode->setNamespace($tokText);
+                $tree->addChild($nsNode);
 
                 // Handles function definitions
             } elseif ($tokType === T_FUNCTION) {
@@ -438,6 +454,17 @@ final class PhpParser {
     }
 
     /**
+     * Renders a abstract syntax tree into a reflection structure.
+     *
+     * @param Ast\BaseAstNode $tree The tree parent node which should be
+     *                              reflected.
+     * @return mixed
+     */
+    public function toReflection(Ast\BaseAstNode $tree) {
+        
+    }
+
+    /**
      * Returns the current instance of this class.
      *
      * @static
@@ -451,4 +478,3 @@ final class PhpParser {
     }
 
 }
-?>
