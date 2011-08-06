@@ -42,12 +42,14 @@ final class PhpParser {
      * Parses an input PHP file into an abstract syntax tree.
      *
      * @param string $file A input file name.
-     * @return ParentAstNode 
+     * @return Ast\ParentAstNode
      */
     public function parse($file) {
         $stream = new TokenStream($file);
         $tree = new Ast\ParentAstNode(0, null);
         $curParent = $tree;
+
+        $tree->setFileName($file);
 
         // Setting declaration buffers
         $docCommentBuffer = null;
@@ -451,17 +453,6 @@ final class PhpParser {
         }
 
         return $tree;
-    }
-
-    /**
-     * Renders a abstract syntax tree into a reflection structure.
-     *
-     * @param Ast\BaseAstNode $tree The tree parent node which should be
-     *                              reflected.
-     * @return mixed
-     */
-    public function toReflection(Ast\BaseAstNode $tree) {
-        
     }
 
     /**

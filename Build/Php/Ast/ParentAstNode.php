@@ -13,7 +13,41 @@ namespace Noize\Build\Php\Ast;
  * @version 1.0
  */
 final class ParentAstNode extends BaseAstNode {
-    
+
+    /**
+     * Stores the file name of the current parent node.
+     *
+     * @var string
+     */
+    private $fileName = '';
+
+    /**
+     * Returns TRUE if the current node has a file name, FALSE otherwise.
+     *
+     * @return bool
+     */
+    public function hasFileName() {
+        return ($this->fileName !== '');
+    }
+
+    /**
+     * Returns the file name of the current parent node.
+     *
+     * @return string
+     */
+    public function getFileName() {
+        return $this->fileName;
+    }
+
+    /**
+     * Sets a new file name for the current parent node.
+     *
+     * @param string $fileName A new file name for the current node.
+     */
+    public function setFileName($fileName) {
+        $this->fileName = $fileName;
+    }
+
     /**
      * Returns TRUE if the current node has a parent node, FALSE otherwise.
      *

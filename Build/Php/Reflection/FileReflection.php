@@ -20,6 +20,24 @@ use Noize\Build\Php\Ast\NamespaceAstNode;
 final class FileReflection extends BaseReflection {
 
     /**
+     * Returns the file name of the currently reflected file.
+     *
+     * @return string
+     */
+    public function getFileName() {
+        return $this->node->getFileName();
+    }
+
+    /**
+     * Sets a new file name for the currently reflected file.
+     *
+     * @param string $fileName A new file name.
+     */
+    public function setFileName($fileName) {
+        $this->node->setFileName($fileName);
+    }
+
+    /**
      * Returns the namespace defined the reflected file.
      *
      * @return string
@@ -181,5 +199,22 @@ final class FileReflection extends BaseReflection {
      */
     public function removeVariable($variableName) {
         $this->node->removeChild($this->getVariable($variableName)->getAstNode());
+    }
+
+    /**
+     * Generates PHP code from the reflection.
+     *
+     * @param bool $saveToFile If set to TRUE the generated source code will be
+     *                         saved to currently set file name.
+     * @return string
+     */
+    public function generate($saveToFile = false) {
+        $code = $this->node->generate();
+
+        if ($saveToFile) {
+            file_put_contents($this->getFileName(), $code);
+            return $code;
+        } else
+            return $code;
     }
 }
