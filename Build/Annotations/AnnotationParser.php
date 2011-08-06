@@ -3,6 +3,7 @@
 namespace Noize\Build\Annotations;
 
 use Noize\Utilities\StringHelper;
+use Noize\Build\Php\Reflection\BaseReflection;
 
 /**
  * A parser for document comments.
@@ -87,9 +88,10 @@ final class AnnotationParser {
      * top level.
      *
      * @param string $comment A string that should be parsed for annotations.
+     * @param BaseReflection $reflection The reflection of the object which is annotated.
      * @return array
      */
-    public function parse($comment) {
+    public function parse($comment, BaseReflection $reflection) {
         $tokens = array ();
         preg_match_all(
                 '~@([a-zA-Z][a-zA-Z0-9]*(?:\(.*\))?)~',
@@ -116,7 +118,7 @@ final class AnnotationParser {
                 foreach ($parts as $part) {
                     $part = StringHelper::instance()->stringToType($part);
                     if (is_string($part) && $part[0] === '@') {
-                        $return = $this->parse($part);
+                        $return = $this->parse($part, $reflection);
                         $parameters[] = $return[0];
                     }
                 }
@@ -126,7 +128,7 @@ final class AnnotationParser {
             if (!class_exists($name) || is_subclass_of($name, 'Noize\\Annotations\\BaseAnnotation'))
                 throw new AnnotationParserException (0, $name);
 
-            $annotations[] = new $name($parameters);
+            $annotations[] = new $name($reflection, $parameters);
         }
 
         return $annotations;
