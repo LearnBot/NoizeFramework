@@ -341,7 +341,7 @@ final class PhpParser {
 
                 // Flush the attribute buffer
                 foreach ($attrBuffer as $attr)
-                    $classNode->addAttribute($attr);
+                    $varNode->addAttribute($attr);
 
                 $attrBuffer = array();
 

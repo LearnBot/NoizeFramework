@@ -16,10 +16,20 @@ use Noize\Build\Php\Ast\VariableAstNode;
  */
 final class ClassReflection extends BaseReflection {
 
+    /**
+     * Returns the class name of the currently reflected class.
+     *
+     * @return string
+     */
     public function getClassName() {
         return $this->node->getClassName();
     }
 
+    /**
+     * Sets a new class name for the reflected class.
+     *
+     * @param string $className A new class name. 
+     */
     public function setClassName($className) {
         $this->node->setClassName($className);
     }

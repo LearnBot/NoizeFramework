@@ -148,7 +148,7 @@ final class FunctionAstNode extends BaseAstNode {
         else
             $code .= ' ' . $this->functionName . ' (';
 
-        usort($this->parameters, function ($a, $b) {
+        uksort($this->parameters, function ($a, $b) {
             if ($a[2] === $b[2])
                 return 0;
 

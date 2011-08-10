@@ -23,7 +23,7 @@ final class FunctionReflection extends BaseReflection {
      * @param string $type The type-hinting of the parameter.
      */
     public function addParameter($name, $default = T_NO_DEFAULT, $type = null, $order = null) {
-        $this->node->addParameter($name, $default, $type, $order);
+        $this->node->addParameter('$' . $name, $default, $type, $order);
     }
 
     /**

@@ -28,7 +28,7 @@ abstract class BaseReflection {
      * @param BaseAstNode $node A node which should be reflected by this class.
      */
     public function __construct(BaseAstNode $node) {
-        $this->node         = $node;
+        $this->node = $node;
     }
 
     /**
@@ -72,7 +72,7 @@ abstract class BaseReflection {
      * @param string $attribute The name of the attribute.
      */
     public function removeAttribute($attribute) {
-        $this->removeAttribute($attribute);
+        $this->node->removeAttribute($attribute);
     }
 
     /**

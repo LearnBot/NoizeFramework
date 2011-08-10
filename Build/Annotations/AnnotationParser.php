@@ -119,13 +119,15 @@ final class AnnotationParser {
                     $part = StringHelper::instance()->stringToType($part);
                     if (is_string($part) && $part[0] === '@') {
                         $return = $this->parse($part, $reflection);
-                        $parameters[] = $return[0];
+                        $part = $return[0];
                     }
+                    
+                    $parameters[] = $part;
                 }
             }
-
+            
             $name = 'Noize\\Annotations\\' . $name . 'Annotation';
-            if (!class_exists($name) || is_subclass_of($name, 'Noize\\Annotations\\BaseAnnotation'))
+            if (!class_exists($name) || !is_subclass_of($name, 'Noize\\Annotations\\BaseAnnotation'))
                 throw new AnnotationParserException (0, $name);
 
             $annotations[] = new $name($reflection, $parameters);

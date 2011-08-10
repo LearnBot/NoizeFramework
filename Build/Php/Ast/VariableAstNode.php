@@ -75,7 +75,7 @@ final class VariableAstNode extends BaseAstNode {
 
         foreach ($this->attributes as $attr)
             $attrString .= $attr->generate() . ' ';
-
+        
         $code = $attrString . $this->text;
 
         if ($this->hasDefaultValue())
